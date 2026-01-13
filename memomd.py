@@ -1,26 +1,29 @@
+import os
+from zandev_textual_widgets import FileSelector
+
 from textual.app import App, ComposeResult
 from textual.screen import Screen
 from textual.widgets import Header, Footer, Label, DirectoryTree, Button
 
 
-class PathScreen(Screen):
+# class PathScreen(Screen):
 
-    BINDINGS = [
-        ("b","path_back_to_hello","back")
-    ]
+#     BINDINGS = [
+#         ("b","path_back_to_hello","back")
+#     ]
 
-    def compose(self) -> ComposeResult:
-        yield Header()
-        yield Label("Test")
-        yield Footer()
+#     def compose(self) -> ComposeResult:
+#         yield Header()
+#         yield Label("Test")
+#         yield Footer()
 
-    def action_path_back_to_hello(self) -> None:
-        self.app.pop_screen()
+#     def action_path_back_to_hello(self) -> None:
+#         self.app.pop_screen()
 
 class HelloScreen(Screen):
 
     BINDINGS = [
-        ("s","selectPath","Select A Deck")
+        ("s","path","Select A Deck")
     ]
 
     def compose(self) -> ComposeResult:
@@ -28,8 +31,11 @@ class HelloScreen(Screen):
         yield Label("Hello Screen")
         yield Footer()
 
-    def action_selectPath(self) -> None:
-        self.app.push_screen(PathScreen()) # push and pop screens only from the app
+    async def action_path(self):
+        def selectedPath(value):
+            print(f"{value}")
+
+        self.app.push_screen(FileSelector(directory=os.getcwd()), callback=selectedPath)
 
 
 class MemoApp(App):
