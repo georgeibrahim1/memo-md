@@ -53,11 +53,9 @@ class MdParser():
         print("Caaaaaaarrrrrrrrrrrdddddddssss" , cards)
         return cards
 
-
-    @staticmethod
-    def cards_to_markdown(cards):
+    def cards_to_markdown(self):
         q = ""
-        for card in cards:
+        for card in self.cards:
             for x in range(len(card[0])):
                 q += card[0][x]
                 q += "\n"

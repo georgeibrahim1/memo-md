@@ -36,7 +36,7 @@ class HelloScreen(Screen):
 
         yield Header()
         yield Label("Hello Screen")
-        md_text = MdParser.cards_to_markdown(self.b.cards)
+        md_text = self.b.cards_to_markdown()
         yield MarkdownViewer(md_text , show_table_of_contents=False)
         yield Footer()
 
