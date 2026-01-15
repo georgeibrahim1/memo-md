@@ -2,3 +2,4 @@
 .vscode
 notes.xopp
 zandev_demo.py
+__pycache__/

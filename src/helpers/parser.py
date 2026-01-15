@@ -49,8 +49,21 @@ class MdParser():
                 answer = []
             elif(line.strip() != '<!--seperator-->' and state == "A"):
                 answer.append(line)
+
+        print("Caaaaaaarrrrrrrrrrrdddddddssss" , cards)
+        return cards
+
+
+    @staticmethod
+    def cards_to_markdown(cards):
+        q = ""
+        for card in cards:
+            for x in range(len(card[0])):
+                q += card[0][x]
+                q += "\n"
         
-        print("=======",cards)
+        return q
+    
          
 
-b = MdParser("format.md")
+# b = MdParser("format.md")
