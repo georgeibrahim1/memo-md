@@ -64,4 +64,4 @@ class MdParser():
     
          
 
-# b = MdParser("format.md")
+b = MdParser("format.md")

@@ -53,3 +53,11 @@ The symbol € is for the currency named _Euro_, and is used in the _EU|European
 3. s
 
 ---
+
+# Order the letters in alphabetical order
+
+<!--seperator-->
+
+Open Photo: # To be edited, I still didn't decide how to add photo feature
+
+---
