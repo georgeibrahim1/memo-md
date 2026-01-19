@@ -66,6 +66,20 @@ class MemoApp(App):
     #         self.push_screen(PathScreen())
 
 
+# here will be a function that takes the cards as parameter
+# there will be a parameter here to save the wrong ones
+# for each card
+    # a function to get the type of display (it will be different from the type of question function)
+    # function to take user input :
+        # photo or normal -> enter -> true or false screen
+        # multiple choice -> keys up and down -> enter
+        # fill in gaps -> keyboard and display what is written -> enter
+        # order -> up and down keys -> enter
+        # --------> enter
+        # a function from session class to grade or determine which is true , it will be used for specific 
+    # a function to make two or one file to test again for the wrong ones 
+
+
 if __name__ == "__main__":
     app = MemoApp()
     app.run()
