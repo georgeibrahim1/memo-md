@@ -11,7 +11,6 @@ class MdParser():
             try:
                 with open(path) as f:
                     data = f.readlines()
-                    print(data)
                     return data
             except:
                 return "Error" # ToDo : Handle Errors (not .md , invalid format)
@@ -49,8 +48,6 @@ class MdParser():
                 answer = []
             elif(line.strip() != '<!--seperator-->' and state == "A"):
                 answer.append(line)
-
-        print("Caaaaaaarrrrrrrrrrrdddddddssss" , cards)
         return cards
 
     def cards_to_markdown(self):
@@ -65,11 +62,15 @@ class MdParser():
     @staticmethod
     def card_to_markdown(card):
         q = ""
+        a = ""
         for x in range(len(card[0])):
             q += card[0][x]
             q += "\n"
+        for x in range(len(card[1])):
+            a += card[1][x]
+            a += "\n"
         
-        return q
+        return [q,a]
     
     @staticmethod
     def get_type_of_question(card):
@@ -92,7 +93,7 @@ class MdParser():
             if(answer[line].strip() == ""):
                 pass 
             else:
-                modified_answer = answer[line]
+                modified_answer.append(answer[line])
 
         for line in modified_answer:
 

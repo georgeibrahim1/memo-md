@@ -61,7 +61,7 @@ class HelloScreen(Screen):
 
         n = len(cards)
 
-        for x in range(n-1,0,-1): # add from behind as it's like a stack
+        for x in range(n-1,-1,-1): # add from behind as it's like a stack
             qt = self.app.get_question_screen_type(cards[x])
             if(qt == "FillInGaps"):
                 self.app.push_screen(Question_Display_FillInGaps(cards[x]))
@@ -71,36 +71,103 @@ class HelloScreen(Screen):
                 self.app.push_screen(Question_Display_NormalorPhoto(cards[x]))
             elif(qt == "Order"):
                 self.app.push_screen(Question_Display_Order(cards[x]))
+            else:
+                self.app.push_screen(Dummy())
 
+
+
+class Dummy(Screen):
+
+    BINDINGS = [
+        ("s","skip","Skip")
+    ]
+    
+    def compose(self) -> ComposeResult:
+        yield Header()
+        tmam = "udaovhovbrb"
+        yield MarkdownViewer(tmam, show_table_of_contents=False)
+        yield Footer()
+
+    def action_skip(self):
+        self.app.pop_screen()
 
 
 class Question_Display_NormalorPhoto(Screen):
 
+    BINDINGS = [
+        ("s","skip","Skip")
+    ]
+
     def __init__(self,card):
         super().__init__()
         self.card = card
-    pass
+    
+    def compose(self) -> ComposeResult:
+        yield Header()
+        md_text = MdParser.card_to_markdown(self.card)
+        yield MarkdownViewer(md_text[0], show_table_of_contents=False)
+        yield Footer()
+
+    def action_skip(self):
+        self.app.pop_screen()
 
 class Question_Display_MultipleChoices(Screen):
 
+    BINDINGS = [
+        ("s","skip","Skip")
+    ]
+
     def __init__(self,card):
         super().__init__()
         self.card = card
-    pass
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        md_text = MdParser.card_to_markdown(self.card)
+        yield MarkdownViewer(md_text[0], show_table_of_contents=False)
+        yield Footer()
+
+    def action_skip(self):
+        self.app.pop_screen()
 
 class Question_Display_FillInGaps(Screen):
 
+    BINDINGS = [
+        ("s","skip","Skip")
+    ]
+
     def __init__(self,card):
         super().__init__()
         self.card = card
-    pass
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        md_text = MdParser.card_to_markdown(self.card)
+        yield MarkdownViewer(md_text[0], show_table_of_contents=False)
+        yield Footer()
+
+
+    def action_skip(self):
+        self.app.pop_screen()
 
 class Question_Display_Order(Screen):
 
+    BINDINGS = [
+        ("s","skip","Skip")
+    ]
+
     def __init__(self,card):
         super().__init__()
         self.card = card
-    pass
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        md_text = MdParser.card_to_markdown(self.card)
+        yield MarkdownViewer(md_text[0], show_table_of_contents=False)
+        yield Footer()
+
+    def action_skip(self):
+        self.app.pop_screen()
 
 
 # here will be a function that takes the cards as parameter
