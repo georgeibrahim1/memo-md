@@ -8,20 +8,29 @@ from textual.widgets import Header, Footer, Label, DirectoryTree, Button, Markdo
 from helpers.parser import MdParser
 
 
-# class PathScreen(Screen):
+class MemoApp(App):
 
-#     BINDINGS = [
-#         ("b","path_back_to_hello","back")
-#     ]
+    BINDINGS = []
 
-#     def compose(self) -> ComposeResult:
-#         yield Header()
-#         yield Label("Test")
-#         yield Footer()
+    def on_mount(self): 
+        self.push_screen(HelloScreen())
 
-#     def action_path_back_to_hello(self) -> None:
-#         self.app.pop_screen()
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Label("Tmam")
+        yield Footer()
 
+    def get_question_screen_type(self,card):
+        question_type = MdParser.get_type_of_question(card)
+
+        if(question_type == "Fill_In_Gap"):
+            return "FillInGaps"
+        elif(question_type == "MultipleChoice_Multiple" or question_type=="MultipleChoice_One"):
+            return "MultipleChoices"
+        elif(question_type == "Normal" or question_type == "Photo_Answer"):
+            return "NormalorPhoto"
+        elif(question_type == "Order"):
+            return "Order"
 
 
 class HelloScreen(Screen):
@@ -32,38 +41,66 @@ class HelloScreen(Screen):
 
     def compose(self) -> ComposeResult:
 
-        self.b = MdParser("format.md") # compose runs before on_mount 
+        # self.b = MdParser("format.md") # compose runs before on_mount 
 
         yield Header()
         yield Label("Hello Screen")
-        md_text = self.b.cards_to_markdown()
-        yield MarkdownViewer(md_text , show_table_of_contents=False)
+        # md_text = self.b.cards_to_markdown()
+        # yield MarkdownViewer(md_text , show_table_of_contents=False)
         yield Footer()
 
     async def action_path(self):
         def selectedPath(value):
-            print(f"{value}")
+            parsed = MdParser(value)
+            self.push_questions_screens(parsed.cards) # add error validations
 
         self.app.push_screen(FileSelector(directory=os.getcwd()), callback=selectedPath)
 
 
-class MemoApp(App):
+    def push_questions_screens(self,cards):
 
-    BINDINGS = []
+        n = len(cards)
 
-    def on_mount(self): 
-        self.push_screen(HelloScreen())
+        for x in range(n-1,0,-1): # add from behind as it's like a stack
+            qt = self.app.get_question_screen_type(cards[x])
+            if(qt == "FillInGaps"):
+                self.app.push_screen(Question_Display_FillInGaps(cards[x]))
+            elif(qt == "MultipleChoices"):
+                self.app.push_screen(Question_Display_MultipleChoices(cards[x]))
+            elif(qt == "NormalorPhoto"):
+                self.app.push_screen(Question_Display_NormalorPhoto(cards[x]))
+            elif(qt == "Order"):
+                self.app.push_screen(Question_Display_Order(cards[x]))
 
 
 
-    def compose(self) -> ComposeResult:
-        yield Header()
-        yield Label("Tmam")
-        yield Footer()
+class Question_Display_NormalorPhoto(Screen):
 
-    # def on_button_pressed(self, event: Button.Pressed) -> None:
-    #     if(event.button.id == "sel"):
-    #         self.push_screen(PathScreen())
+    def __init__(self,card):
+        super().__init__()
+        self.card = card
+    pass
+
+class Question_Display_MultipleChoices(Screen):
+
+    def __init__(self,card):
+        super().__init__()
+        self.card = card
+    pass
+
+class Question_Display_FillInGaps(Screen):
+
+    def __init__(self,card):
+        super().__init__()
+        self.card = card
+    pass
+
+class Question_Display_Order(Screen):
+
+    def __init__(self,card):
+        super().__init__()
+        self.card = card
+    pass
 
 
 # here will be a function that takes the cards as parameter

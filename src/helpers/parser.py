@@ -63,6 +63,15 @@ class MdParser():
         return q
     
     @staticmethod
+    def card_to_markdown(card):
+        q = ""
+        for x in range(len(card[0])):
+            q += card[0][x]
+            q += "\n"
+        
+        return q
+    
+    @staticmethod
     def get_type_of_question(card):
 
         # normal question
@@ -79,8 +88,8 @@ class MdParser():
 
         modified_answer = [] # delete spaces
 
-        for line in answer:
-            if(line.strip() == ""):
+        for line in range(0,len(answer)):
+            if(answer[line].strip() == ""):
                 pass 
             else:
                 modified_answer = answer[line]
