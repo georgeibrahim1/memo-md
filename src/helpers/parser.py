@@ -104,7 +104,7 @@ class MdParser():
             # second_underline = False
 
 
-            for x in edited_line:
+            for x in edited_line: # there is a problem here + needs optimize (maybe regex?)
                 if(x == "_"):
                     if(not first_underline):
                         first_underline = True
@@ -118,18 +118,18 @@ class MdParser():
 
             if(edited_line[0] == "-" or edited_line[0] == "*"):
                 return "MultipleChoice_One"
-            elif(edited_line[0:2] == "[ ]" or edited_line[0:2] == "[*]"):
+            elif(edited_line[0:3] == "[ ]" or edited_line[0:3] == "[*]"):
                 return "MultipleChoice_Multiple"
-            elif(edited_line[0:1] == "1." or edited_line[0:1] == "2." or edited_line[0:1] == "3." or edited_line[0:1] == "4."):
+            elif(edited_line[0:2] == "1." or edited_line[0:2] == "2." or edited_line[0:2] == "3." or edited_line[0:2] == "4."):
                 return "Order"
-            elif(edited_line[0:10] == "Open Photo:"): 
+            elif(edited_line[0:11] == "Open Photo:"): 
                 return "Photo_Answer" # To be edited, I still didn't decide how to add photo feature
             else: 
                 return "Normal"
         
-        @staticmethod
-        def true_or_false(card):
-            pass
+    @staticmethod
+    def true_or_false(card):
+        pass
     
          
 
