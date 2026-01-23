@@ -3,6 +3,7 @@ from zandev_textual_widgets import FileSelector
 
 from textual.app import App, ComposeResult
 from textual.screen import Screen
+from textual.containers import Container, Horizontal
 from textual.widgets import Header, Footer, Label, DirectoryTree, Button, MarkdownViewer
 
 from helpers.parser import MdParser
@@ -94,6 +95,8 @@ class Dummy(Screen):
 
 class Question_Display_NormalorPhoto(Screen):
 
+    CSS_PATH = "app.tcss"
+
     BINDINGS = [
         ("s","skip","Skip")
     ]
@@ -105,8 +108,23 @@ class Question_Display_NormalorPhoto(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
         md_text = MdParser.card_to_markdown(self.card)
-        yield MarkdownViewer(md_text[0], show_table_of_contents=False)
+        yield Horizontal(
+            MarkdownViewer(md_text[0], show_table_of_contents=False), 
+            Container(
+                MarkdownViewer(md_text[1] , show_table_of_contents=False , classes="hidden" , id="answerMarkDown"),
+                Button(
+                    "Show Answer" , variant="success" , id="answerButton"
+                ),
+                id="Question_Display_NormalorPhoto_answerContainer"
+            )
+        )
         yield Footer()
+    
+
+    def on_button_pressed(self,event:Button.Pressed):
+        if(event.button.id == 'answerButton'):
+            self.get_widget_by_id("answerButton").add_class("hidden") # add class here with the widget class not the styles 
+            self.get_widget_by_id("answerMarkDown").remove_class("hidden")
 
     def action_skip(self):
         self.app.pop_screen()

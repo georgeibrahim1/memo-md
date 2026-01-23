@@ -1,0 +1,15 @@
+/*
+    TODO:
+    - add variables for colors like $var for the color themes
+    - add margins for markdown view
+    - change the style of the imported file selector widget 
+*/
+
+
+.hidden {
+    display: none;
+}
+
+#Question_Display_NormalorPhoto_answerContainer {
+    align: center middle;
+}
