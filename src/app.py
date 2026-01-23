@@ -12,6 +12,11 @@ from helpers.parser import MdParser
 class MemoApp(App):
 
     BINDINGS = []
+    
+    def __init__(self):
+        super.__init__()
+        self.truePerSession = [] 
+        self.falsePerSession = [] # both will be erased if the user does another session after another session
 
     def on_mount(self): 
         self.push_screen(HelloScreen())
@@ -33,7 +38,6 @@ class MemoApp(App):
         elif(question_type == "Order"):
             return "Order"
 
-
 class HelloScreen(Screen):
 
     BINDINGS = [
@@ -41,24 +45,28 @@ class HelloScreen(Screen):
     ]
 
     def compose(self) -> ComposeResult:
-
-        # self.b = MdParser("format.md") # compose runs before on_mount 
-
         yield Header()
         yield Label("Hello Screen")
-        # md_text = self.b.cards_to_markdown()
-        # yield MarkdownViewer(md_text , show_table_of_contents=False)
         yield Footer()
 
     async def action_path(self):
-        def selectedPath(value):
-            parsed = MdParser(value)
-            self.push_questions_screens(parsed.cards) # add error validations
+        def selectedPath(value : str):
+            self.app.push_screen(SessionClass(value))
 
         self.app.push_screen(FileSelector(directory=os.getcwd()), callback=selectedPath)
 
 
-    def push_questions_screens(self,cards):
+
+class SessionClass(Screen):
+    def __init__(self,md:str):
+        super.__init__()
+        self.md = md
+        self.cards = MdParser(self.md)
+        
+    def on_mount(self):
+        self._push_questions_screens(self.cards) # add error validations
+
+    def _push_questions_screens(self,cards):
 
         n = len(cards)
 
@@ -73,11 +81,10 @@ class HelloScreen(Screen):
             elif(qt == "Order"):
                 self.app.push_screen(Question_Display_Order(cards[x]))
             else:
-                self.app.push_screen(Dummy())
+                self.app.push_screen(Question_Display_Dummy())
 
 
-
-class Dummy(Screen):
+class Question_Display_Dummy(Screen):
 
     BINDINGS = [
         ("s","skip","Skip")
@@ -85,7 +92,7 @@ class Dummy(Screen):
     
     def compose(self) -> ComposeResult:
         yield Header()
-        tmam = "udaovhovbrb"
+        tmam = "This a dummy one, there is a problem in the app!"
         yield MarkdownViewer(tmam, show_table_of_contents=False)
         yield Footer()
 
