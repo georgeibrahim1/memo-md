@@ -1,3 +1,5 @@
+import re
+
 class MdParser():
     def __init__(self , path):
         self.path = path
@@ -85,20 +87,14 @@ class MdParser():
                 txt_bool_choices.append([txt_choice,status])
 
         return txt_bool_choices
-
-        
-        
     
     @staticmethod
+    def get_question_of_fill_in_gap(card):
+        question = card[0]
+        return re.sub("__g.__" , "_____",question)
+
+    @staticmethod
     def get_type_of_question(card):
-
-        # normal question
-        # multiple choices (multiple)
-        # fill in gaps
-        # order 
-            ######## all above can have like open a photo in the question
-        # photo (Just open the photo in the answer)
-
 
         question = card[0]
         answer = card[1]
@@ -119,22 +115,13 @@ class MdParser():
             vertical_line = False
             # second_underline = False
 
-
-            for x in edited_line: # there is a problem here + needs optimize (maybe regex?)
-                if(x == "_"):
-                    if(not first_underline):
-                        first_underline = True
-                    elif(first_underline):
-                        if(vertical_line):
-                            return "Fill_In_Gap"
-                elif(x == "|"):
-                    if(first_underline):
-                        vertical_line = True
+            fill_in_gaps_objs = re.findall("__g.+__",edited_line)
+            # print(fill_in_gaps_objs)
+            if(len(fill_in_gaps_objs) > 0):
+                return "Fill_In_Gap"
 
             if(edited_line[0:3] == "[ ]" or edited_line[0:3] == "[*]"):
                 return "MultipleChoice_Multiple"
-            elif(edited_line[0:2] == "1." or edited_line[0:2] == "2." or edited_line[0:2] == "3." or edited_line[0:2] == "4."):
-                return "Order"
             elif(edited_line[0:11] == "Open Photo:"): 
                 return "Photo_Answer" # To be edited, I still didn't decide how to add photo feature
             else: 
