@@ -76,7 +76,6 @@ class MdParser():
     def get_type_of_question(card):
 
         # normal question
-        # multiple choices (one)
         # multiple choices (multiple)
         # fill in gaps
         # order 
@@ -115,10 +114,7 @@ class MdParser():
                     if(first_underline):
                         vertical_line = True
 
-
-            if(edited_line[0] == "-" or edited_line[0] == "*"):
-                return "MultipleChoice_One"
-            elif(edited_line[0:3] == "[ ]" or edited_line[0:3] == "[*]"):
+            if(edited_line[0:3] == "[ ]" or edited_line[0:3] == "[*]"):
                 return "MultipleChoice_Multiple"
             elif(edited_line[0:2] == "1." or edited_line[0:2] == "2." or edited_line[0:2] == "3." or edited_line[0:2] == "4."):
                 return "Order"

@@ -13,18 +13,7 @@ Explanation or definition of this word, or the answer to the question.
 
 ---
 
-# Multiple choice question, (only one answer is right)
-
-<!--seperator-->
-
-- Choice 1
-* Choice 2 (this is the correct answer)
-- Choice 3
-- Choice 4
-
----
-
-# Multiple answer question
+# Multiple Choice Question (one or more than one answer)
 
 <!--seperator-->
 

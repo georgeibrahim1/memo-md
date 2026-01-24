@@ -31,7 +31,7 @@ class MemoApp(App):
 
         if(question_type == "Fill_In_Gap"):
             return "FillInGaps"
-        elif(question_type == "MultipleChoice_Multiple" or question_type=="MultipleChoice_One"):
+        elif(question_type == "MultipleChoice_Multiple"):
             return "MultipleChoices"
         elif(question_type == "Normal" or question_type == "Photo_Answer"):
             return "NormalorPhoto"
@@ -199,7 +199,16 @@ class Question_Display_MultipleChoices(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
         md_text = MdParser.card_to_markdown(self.card)
-        yield MarkdownViewer(md_text[0], show_table_of_contents=False)
+        yield Horizontal(
+            MarkdownViewer(md_text[0], show_table_of_contents=False), 
+            Container(
+                MarkdownViewer(md_text[1] , show_table_of_contents=False , classes="hidden" , id="answerMarkDown"),
+                Button(
+                    "Show Answer" , variant="success" , id="answerButton"
+                ),
+                id="Question_Display_NormalorPhoto_answerContainer"
+            )
+        )
         yield Footer()
 
     def action_skip(self):
