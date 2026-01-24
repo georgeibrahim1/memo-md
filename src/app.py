@@ -4,7 +4,8 @@ from zandev_textual_widgets import FileSelector
 from textual.app import App, ComposeResult
 from textual.screen import Screen , ModalScreen
 from textual.containers import Container, Horizontal, Grid
-from textual.widgets import Header, Footer, Label, DirectoryTree, Button, MarkdownViewer
+from textual.widgets import Header, Footer, Label, DirectoryTree, Button, MarkdownViewer, SelectionList
+from textual.widgets.selection_list import Selection
 
 from helpers.parser import MdParser
 
@@ -188,28 +189,84 @@ class IsTrueOrFalseModalScreen(ModalScreen[bool]):
 
 class Question_Display_MultipleChoices(Screen):
 
+    CSS_PATH = "app.tcss"
+
     BINDINGS = [
-        ("s","skip","Skip")
+        ("s","skip","Skip"),
+        ("u","answer","Submit"),
+        ("c","continue","Continue")
     ]
 
     def __init__(self,card):
         super().__init__()
         self.card = card
+        self.answered = False
+        self.true_selections_as_indecies = []
+
+    def check_action(self, action: str, parameters: tuple[object, ...]):
+        if(action == "continue"):
+            return self.answered 
+        if(action == "skip"):
+            return not self.answered 
+        if(action == "answer"):
+            return not self.answered 
+        return True
 
     def compose(self) -> ComposeResult:
         yield Header()
         md_text = MdParser.card_to_markdown(self.card)
+        txt_bool_choices = MdParser.get_multipleChoices_as_text_bool(self.card)
+
+        selections = []
+        true_selections_as_labels = []
+        
+
+
+        for i in range(len(txt_bool_choices)):
+
+            id_s = ""
+            if(txt_bool_choices[i][1]):
+                id_s = "True_Selection_" + f"{i}"
+                true_selections_as_labels.append(Label(txt_bool_choices[i][0]))
+                self.true_selections_as_indecies.append(i)
+            else:
+                id_s = "False_Selection_" + f"{i}"
+
+            s_widget = Selection(txt_bool_choices[i][0] , i , id=id_s)
+            selections.append(s_widget)
+
         yield Horizontal(
             MarkdownViewer(md_text[0], show_table_of_contents=False), 
             Container(
-                MarkdownViewer(md_text[1] , show_table_of_contents=False , classes="hidden" , id="answerMarkDown"),
-                Button(
-                    "Show Answer" , variant="success" , id="answerButton"
+                SelectionList[bool](
+                    *selections,
+                    id="sel"
                 ),
-                id="Question_Display_NormalorPhoto_answerContainer"
+                Container(
+                    *true_selections_as_labels,
+                    id="Question_Display_MultipleChoices_answerContainer",
+                    classes="hidden"
+                )
             )
         )
-        yield Footer()
+        yield Footer()   
+
+    def action_answer(self):
+        self.answered = True
+        self.refresh_bindings()
+        self.get_widget_by_id("Question_Display_MultipleChoices_answerContainer").remove_class("hidden")
+    
+    def action_continue(self):
+        selected = self.query_one(SelectionList).selected
+        for x in selected:
+            if(x not in self.true_selections_as_indecies):
+                self.app.falsePerSession.append(self.card)
+                return
+        
+        self.app.truePerSession.append(self.card)
+
+
+
 
     def action_skip(self):
         self.app.pop_screen()

@@ -73,6 +73,23 @@ class MdParser():
         return [q,a]
     
     @staticmethod
+    def get_multipleChoices_as_text_bool(card):
+        md_choices = card[1]
+        txt_bool_choices = []
+        for md_choice in md_choices:
+            status = False
+            if(len(md_choice) > 2):
+                if(md_choice[1] == "*"):
+                    status = True
+                txt_choice = md_choice[3:]
+                txt_bool_choices.append([txt_choice,status])
+
+        return txt_bool_choices
+
+        
+        
+    
+    @staticmethod
     def get_type_of_question(card):
 
         # normal question
