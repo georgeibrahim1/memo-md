@@ -30,9 +30,7 @@ class MemoApp(App):
     def get_question_screen_type(self,card):
         question_type = MdParser.get_type_of_question(card)
 
-        if(question_type == "Fill_In_Gap"):
-            return "FillInGaps"
-        elif(question_type == "MultipleChoice_Multiple"):
+        if(question_type == "MultipleChoice_Multiple"):
             return "MultipleChoices"
         elif(question_type == "Normal" or question_type == "Photo_Answer"):
             return "NormalorPhoto"
@@ -71,9 +69,7 @@ class SessionClass(Screen):
 
         for x in range(n-1,-1,-1): # add from behind as it's like a stack
             qt = self.app.get_question_screen_type(self.cards[x])
-            if(qt == "FillInGaps"):
-                self.app.push_screen(Question_Display_FillInGaps(self.cards[x]))
-            elif(qt == "MultipleChoices"):
+            if(qt == "MultipleChoices"):
                 self.app.push_screen(Question_Display_MultipleChoices(self.cards[x]))
             elif(qt == "NormalorPhoto"):
                 self.app.push_screen(Question_Display_NormalorPhoto(self.cards[x]))
@@ -121,7 +117,7 @@ class Question_Display_NormalorPhoto(Screen):
                 Button(
                     "Show Answer" , variant="success" , id="answerButton"
                 ),
-                id="Question_Display_NormalorPhoto_answerContainer"
+                id="Question_Display_answerContainer"
             )
         )
         yield Footer()
@@ -216,8 +212,6 @@ class Question_Display_MultipleChoices(Screen):
         selections = []
         true_selections_as_labels = []
         
-
-
         for i in range(len(txt_bool_choices)):
 
             id_s = ""
@@ -265,27 +259,6 @@ class Question_Display_MultipleChoices(Screen):
 
     def action_skip(self):
         self.app.pop_screen()
-
-class Question_Display_FillInGaps(Screen):
-
-    BINDINGS = [
-        ("s","skip","Skip")
-    ]
-
-    def __init__(self,card):
-        super().__init__()
-        self.card = card
-
-    def compose(self) -> ComposeResult:
-        yield Header()
-        md_text = MdParser.card_to_markdown(self.card)
-        yield MarkdownViewer(md_text[0], show_table_of_contents=False)
-        yield Footer()
-
-
-    def action_skip(self):
-        self.app.pop_screen()
-
 
 if __name__ == "__main__":
     app = MemoApp()

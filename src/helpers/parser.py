@@ -91,7 +91,7 @@ class MdParser():
     @staticmethod
     def get_question_of_fill_in_gap(card):
         question = card[0]
-        return re.sub("__g.__" , "_____",question)
+        return re.sub("__g.__" , "_____", question)
 
     @staticmethod
     def get_type_of_question(card):
@@ -110,15 +110,6 @@ class MdParser():
         for line in modified_answer:
 
             edited_line = line.strip()
-
-            first_underline = False
-            vertical_line = False
-            # second_underline = False
-
-            fill_in_gaps_objs = re.findall("__g.+__",edited_line)
-            # print(fill_in_gaps_objs)
-            if(len(fill_in_gaps_objs) > 0):
-                return "Fill_In_Gap"
 
             if(edited_line[0:3] == "[ ]" or edited_line[0:3] == "[*]"):
                 return "MultipleChoice_Multiple"

@@ -24,7 +24,7 @@ Explanation or definition of this word, or the answer to the question.
 
 ---
 
-The symbol * is used as __g1__ in python, and the spread operator of JavaScript is __g2__.
+The symbol * is used as _____ in python, and the spread operator of JavaScript is ___.
 
 <!--seperator-->
 

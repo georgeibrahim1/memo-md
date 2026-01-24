@@ -10,7 +10,7 @@
     display: none;
 }
 
-#Question_Display_NormalorPhoto_answerContainer {
+#Question_Display_answerContainer {
     align: center middle;
 }
 
