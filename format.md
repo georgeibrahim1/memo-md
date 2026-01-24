@@ -24,26 +24,16 @@ Explanation or definition of this word, or the answer to the question.
 
 ---
 
-# Fill in the gaps
+The symbol * is used as __g1__ in python, and the spread operator of JavaScript is __g2__.
 
 <!--seperator-->
 
-The symbol € is for the currency named _Euro_, and is used in the _EU|European Union_.
+1- *
+2- ...
 
 ---
 
-# Order the letters in alphabetical order
-
-<!--seperator-->
-
-4. u
-1. l
-2. p
-3. s
-
----
-
-# Order the letters in alphabetical order
+# Question Placeholder
 
 <!--seperator-->
 
