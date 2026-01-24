@@ -36,8 +36,6 @@ class MemoApp(App):
             return "MultipleChoices"
         elif(question_type == "Normal" or question_type == "Photo_Answer"):
             return "NormalorPhoto"
-        elif(question_type == "Order"):
-            return "Order"
 
 class HelloScreen(Screen):
 
@@ -79,8 +77,6 @@ class SessionClass(Screen):
                 self.app.push_screen(Question_Display_MultipleChoices(self.cards[x]))
             elif(qt == "NormalorPhoto"):
                 self.app.push_screen(Question_Display_NormalorPhoto(self.cards[x]))
-            elif(qt == "Order"):
-                self.app.push_screen(Question_Display_Order(self.cards[x]))
             else:
                 self.app.push_screen(Question_Display_Dummy())
 
@@ -264,8 +260,7 @@ class Question_Display_MultipleChoices(Screen):
                 return
         
         self.app.truePerSession.append(self.card)
-
-
+        self.app.pop_screen()
 
 
     def action_skip(self):
@@ -290,39 +285,6 @@ class Question_Display_FillInGaps(Screen):
 
     def action_skip(self):
         self.app.pop_screen()
-
-class Question_Display_Order(Screen):
-
-    BINDINGS = [
-        ("s","skip","Skip")
-    ]
-
-    def __init__(self,card):
-        super().__init__()
-        self.card = card
-
-    def compose(self) -> ComposeResult:
-        yield Header()
-        md_text = MdParser.card_to_markdown(self.card)
-        yield MarkdownViewer(md_text[0], show_table_of_contents=False)
-        yield Footer()
-
-    def action_skip(self):
-        self.app.pop_screen()
-
-
-# here will be a function that takes the cards as parameter
-# there will be a parameter here to save the wrong ones
-# for each card
-    # a function to get the type of display (it will be different from the type of question function)
-    # function to take user input :
-        # photo or normal -> enter -> true or false screen
-        # multiple choice -> keys up and down -> enter
-        # fill in gaps -> keyboard and display what is written -> enter
-        # order -> up and down keys -> enter
-        # --------> enter
-        # a function from session class to grade or determine which is true , it will be used for specific 
-    # a function to make two or one file to test again for the wrong ones 
 
 
 if __name__ == "__main__":
