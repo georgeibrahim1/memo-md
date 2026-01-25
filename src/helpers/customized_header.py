@@ -25,10 +25,6 @@ class HeaderIcon(Widget):
         width: 8;
         content-align: left middle;
     }
-
-    HeaderIcon:hover {
-        background: $foreground 10%;
-    }
     """
 
     icon = Reactive("⭘")
@@ -124,9 +120,6 @@ class Header(Widget):
         color: $foreground;
         height: 1;
     }
-    Header.-tall {
-        height: 3;
-    }
     """
 
     DEFAULT_CLASSES = ""
@@ -169,7 +162,7 @@ class Header(Widget):
 
     def compose(self) -> ComposeResult:
         # yield HeaderIcon().data_bind(Header.icon) <---
-        yield HeaderTitle()
+        yield HeaderTitle("memo-md")
         yield (
             HeaderClock().data_bind(Header.time_format)
             if self._show_clock
@@ -195,13 +188,7 @@ class Header(Widget):
 
     @property
     def screen_title(self) -> str:
-        """The title that this header will display.
-
-        This depends on [`Screen.title`][textual.screen.Screen.title] and [`App.title`][textual.app.App.title].
-        """
-        screen_title = self.screen.title
-        title = screen_title if screen_title is not None else self.app.title
-        return title
+        return "memo-md"
 
     @property
     def screen_sub_title(self) -> str:
