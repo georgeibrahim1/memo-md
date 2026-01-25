@@ -8,14 +8,11 @@ class MdParser():
         self.filteredData = self._filter_data(self.data)
         self.cards = self._getCards(self.filteredData)
 
-    @staticmethod # static private method as helper ya3ne (gamed walahy)
-    def _load(path): 
-            try:
-                with open(path) as f:
-                    data = f.readlines()
-                    return data
-            except:
-                return "Error" # ToDo : Handle Errors (not .md , invalid format)
+    @staticmethod 
+    def _load(path): # TODO: it must raiseErrors if the format is not like the requried
+        with open(path) as f:
+            data = f.readlines()
+            return data
          
     @staticmethod
     def _filter_data(data):
@@ -30,7 +27,7 @@ class MdParser():
          return data
 
     @staticmethod
-    def _getCards(data):
+    def _getCards(data): 
 
         cards = []
 
@@ -128,7 +125,4 @@ class MdParser():
     @staticmethod
     def true_or_false(card):
         pass
-    
-         
 
-b = MdParser("format.md")

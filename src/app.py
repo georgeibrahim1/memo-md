@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from zandev_textual_widgets import FileSelector
 
 from textual.app import App, ComposeResult
@@ -17,8 +18,7 @@ class MemoApp(App):
     def __init__(self):
         super().__init__()
         self.path = ""
-        self.truePerSession = [] 
-        self.falsePerSession = [] # both will be erased if the user does another session after another session
+        self.falsePerSession = []
 
     def on_mount(self): 
         self.push_screen(HelloScreen())
@@ -61,18 +61,41 @@ class HelloScreen(Screen):
                 self.app.exit()
 
         def selectedPath(value : str):
+
+            if((not os.path.isfile(value)) or len(value) == 0 or Path(value).suffix != ".md"):
+                self.app.push_screen(ErrorModalScreen())
+                return
+
             self.app.path = value
             self.app.push_screen(SessionClass(value) , check_if_george_wants_to_gen)
 
-        self.app.push_screen(FileSelector(directory=os.getcwd()), callback=selectedPath)
+        self.app.push_screen(FileSelector(directory=os.getcwd()), callback=selectedPath) # when this opens and I click cancel, it stills returns a value ! , The future me if you read this and you are not busy, pull request to zandev and fix this issue
 
-
+class ErrorModalScreen(ModalScreen[bool]):
+    def compose(self) -> ComposeResult:
+        yield Grid(
+            Label(
+                "Please Choose a markdown file with the required format!" , classes="ErrorLabel"
+            ),
+            Button(
+                "Ok" , variant="error",id="ErrorButton"
+            ),
+            classes="Modal"
+        )
+    
+    def on_button_pressed(self, event:Button.Pressed):
+        self.app.pop_screen()
 
 class SessionClass(Screen):
     def __init__(self,md:str):
         super().__init__()
         self.md = md
-        self.cards = MdParser(self.md).cards
+        try:
+            self.cards = MdParser(self.md).cards
+        except:
+            self.app.push_screen(ErrorModalScreen())
+        
+
         
     def on_mount(self):
         self._push_questions_screens() # add error validations
@@ -134,7 +157,7 @@ class Question_Display_NormalorPhoto(Screen):
 
     BINDINGS = [
         ("s","skip","Skip"),
-        ("enter", "showModal", "Continue")
+        ("c", "showModal", "Continue")
     ]
 
     def __init__(self,card):
@@ -284,6 +307,12 @@ class Question_Display_MultipleChoices(Screen):
     
     def action_continue(self):
         selected = self.query_one(SelectionList).selected
+
+        if(len(selected) != len(self.true_selections_as_indecies)):
+            self.app.falsePerSession.append(self.card)
+            self.app.pop_screen()
+            return
+
         for x in selected:
             if(x not in self.true_selections_as_indecies):
                 self.app.falsePerSession.append(self.card)
