@@ -87,15 +87,18 @@ class ErrorModalScreen(ModalScreen[bool]):
     def compose(self) -> ComposeResult:
         yield Grid(
             Label(
-                "Please Choose a markdown file with the required format!" , classes="ErrorLabel"
+                "Please Choose a markdown file with the required format!", 
+                classes="ErrorLabel"
             ),
             Button(
-                "Ok" , variant="error",id="ErrorButton"
+                "Ok", 
+                variant="error",
+                id="ErrorButton"
             ),
-            classes="Modal"
+            classes="ErrorModal"
         )
     
-    def on_button_pressed(self, event:Button.Pressed):
+    def on_button_pressed(self, event: Button.Pressed):
         self.app.pop_screen()
 
 class SessionClass(Screen):
@@ -115,16 +118,22 @@ class SessionClass(Screen):
     def compose(self) -> ComposeResult:
         yield Grid(
             Label(
-                "Do you want to generate a markdown file for your mistakes?" , id="generateModal_QuestionLabel" , classes="QuestionLabel"
+                "Do you want to generate a markdown file for your mistakes?",
+                id="generateModal_QuestionLabel",
+                classes="QuestionLabel"
             ),
             Button(
-                "Yes", variant="success", id="generateModal_YesButton"
+                "Yes",
+                variant="success",
+                id="generateModal_YesButton"
             ),
             Button(
-                "No" , variant="error",id="generateModal_NoButton"
+                "No",
+                variant="error",
+                id="generateModal_NoButton"
             ),
             id="generateModal",
-            classes="Modal"
+            classes="SessionModal"
         )
 
     def on_button_pressed(self, event:Button.Pressed):
