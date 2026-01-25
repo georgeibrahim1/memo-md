@@ -1,7 +1,10 @@
 .venv
 .vscode
-notes.xopp
 zandev_demo.py
 __pycache__/
 drawnotes.md
 architecture.md
+build
+dist
+MemoApp.spec
+nul

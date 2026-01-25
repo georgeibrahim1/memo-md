@@ -38,6 +38,7 @@ $dark_green: #102820;
 }
 
 #multipleChoiceQuestionMarkDown {
+    color: $light_brown;
     border: round $med_brown;
     background: $dark_brown;
     border-title-align: left;

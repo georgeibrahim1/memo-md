@@ -5,7 +5,7 @@ from zandev_textual_widgets import FileSelector
 from textual.app import App, ComposeResult
 from textual.screen import Screen , ModalScreen
 from textual.containers import Container, Horizontal, Grid
-from textual.widgets import Header, Footer, Label, DirectoryTree, Button, MarkdownViewer, SelectionList, Pretty, Static
+from textual.widgets import Footer, Label, DirectoryTree, Button, MarkdownViewer, SelectionList, Pretty, Static
 from textual.widgets.selection_list import Selection
 
 from helpers.parser import MdParser
@@ -14,12 +14,12 @@ from rich_pixels import Pixels
 from rich.console import Console
 
 from helpers.theme import forest_theme
-
+from helpers.customized_header import Header
 
 class MemoApp(App):
 
     BINDINGS = []
-    CSS_PATH ="./app.tcss"
+    CSS_PATH = "app.tcss"
 
     def __init__(self):
         super().__init__()
@@ -33,9 +33,9 @@ class MemoApp(App):
         self.push_screen(HelloScreen())
 
     def compose(self) -> ComposeResult:
-        yield Header()
+        yield Header(show_clock=False)
         yield Label("Tmam")
-        yield Footer()
+        yield Footer(show_command_palette=False)
 
     def get_question_screen_type(self,card):
         question_type = MdParser.get_type_of_question(card)
@@ -53,11 +53,10 @@ class HelloScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Label("Hello Screen")
         # console = Console()
-        # pixels = Pixels.from_image_path(os.path.normpath("assets/architecture.png"))
+        # pixels = Pixels.from_image_path(os.path.normpath("assets/forest.jpg") , [150,100])
         # yield Static(pixels)
-        yield Footer()
+        yield Footer(show_command_palette=False)
 
     async def action_path(self):
 
@@ -166,15 +165,13 @@ class Question_Display_Dummy(Screen):
         yield Header()
         tmam = "This a dummy one, there is a problem in the app!"
         yield MarkdownViewer(tmam, show_table_of_contents=False)
-        yield Footer()
+        yield Footer(show_command_palette=False)
 
     def action_skip(self):
         self.app.pop_screen()
 
 
 class Question_Display_NormalorPhoto(Screen):
-
-    CSS_PATH = "app.tcss"
 
     BINDINGS = [
         ("s","skip","Skip"),
@@ -206,7 +203,7 @@ class Question_Display_NormalorPhoto(Screen):
                 id="Question_Display_answerContainer"
             )
         )
-        yield Footer()
+        yield Footer(show_command_palette=False)
     
     # thanks to https://textual.textualize.io/guide/actions/#__tabbed_4_1 (It took me like 3 hours to find a way to make the binding shit dynamic but it is like a gem in a fucking forest)
     def check_action(self, action: str, parameters: tuple[object, ...]) -> bool | None:
@@ -267,8 +264,6 @@ class IsTrueOrFalseModalScreen(ModalScreen[bool]):
 
 
 class Question_Display_MultipleChoices(Screen):
-
-    CSS_PATH = "app.tcss"
 
     BINDINGS = [
         ("s","skip","Skip"),
@@ -335,7 +330,7 @@ class Question_Display_MultipleChoices(Screen):
                 answer_container
             )
         )
-        yield Footer()   
+        yield Footer(show_command_palette=False)   
 
     def action_answer(self):
         self.answered = True
