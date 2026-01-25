@@ -32,11 +32,3 @@ The symbol * is used as _____ in python, and the spread operator of JavaScript i
 2- ...
 
 ---
-
-# Question Placeholder
-
-<!--seperator-->
-
-Open Photo: # To be edited, I still didn't decide how to add photo feature
-
----

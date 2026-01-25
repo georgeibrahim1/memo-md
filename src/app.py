@@ -16,6 +16,7 @@ class MemoApp(App):
     
     def __init__(self):
         super().__init__()
+        self.path = ""
         self.truePerSession = [] 
         self.falsePerSession = [] # both will be erased if the user does another session after another session
 
@@ -47,8 +48,21 @@ class HelloScreen(Screen):
         yield Footer()
 
     async def action_path(self):
+
+        def check_if_george_wants_to_gen(value: bool):
+            if(value):
+                md_wrong_file = MdParser.cards_to_markdown_file(self.app.falsePerSession)
+                fileName = os.path.basename(self.app.path)
+                os.path.join(self.app.path, "_" + fileName)
+                with open("_" + fileName, "w") as file:
+                    file.write(md_wrong_file)
+                self.app.exit()
+            else:
+                self.app.exit()
+
         def selectedPath(value : str):
-            self.app.push_screen(SessionClass(value))
+            self.app.path = value
+            self.app.push_screen(SessionClass(value) , check_if_george_wants_to_gen)
 
         self.app.push_screen(FileSelector(directory=os.getcwd()), callback=selectedPath)
 
@@ -62,6 +76,27 @@ class SessionClass(Screen):
         
     def on_mount(self):
         self._push_questions_screens() # add error validations
+
+    def compose(self) -> ComposeResult:
+        yield Grid(
+            Label(
+                "Do you want to generate a markdown file for your mistakes?" , id="generateModal_QuestionLabel" , classes="QuestionLabel"
+            ),
+            Button(
+                "Yes", variant="success", id="generateModal_YesButton"
+            ),
+            Button(
+                "No" , variant="error",id="generateModal_NoButton"
+            ),
+            id="generateModal",
+            classes="Modal"
+        )
+
+    def on_button_pressed(self, event:Button.Pressed):
+        if(event.button.id == "generateModal_YesButton"):
+            self.dismiss(True)
+        elif(event.button.id == "generateModal_NoButton"):
+            self.dismiss(False) 
 
     def _push_questions_screens(self):
 
@@ -161,7 +196,7 @@ class IsTrueOrFalseModalScreen(ModalScreen[bool]):
     def compose(self) -> ComposeResult:
         yield Grid(
             Label(
-                "Did you answer this question right?" , id="isTrueOrFalseModa_QuestionLabel"
+                "Did you answer this question right?" , id="isTrueOrFalseModa_QuestionLabel", classes="QuestionLabel"
             ),
             Button(
                 "Yes", variant="success", id="isTrueOrFalseModal_YesButton"
@@ -169,7 +204,8 @@ class IsTrueOrFalseModalScreen(ModalScreen[bool]):
             Button(
                 "No" , variant="error",id="isTrueOrFalseModal_NoButton"
             ),
-            id="isTrueOrFalseModal"
+            id="isTrueOrFalseModal",
+            classes="Modal"
         )
     
     def on_button_pressed(self, event:Button.Pressed):
@@ -251,6 +287,7 @@ class Question_Display_MultipleChoices(Screen):
         for x in selected:
             if(x not in self.true_selections_as_indecies):
                 self.app.falsePerSession.append(self.card)
+                self.app.pop_screen()
                 return
         
         self.app.truePerSession.append(self.card)

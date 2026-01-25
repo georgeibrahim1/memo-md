@@ -52,14 +52,23 @@ class MdParser():
                 answer.append(line)
         return cards
 
-    def cards_to_markdown(self):
-        q = ""
-        for card in self.cards:
+    @staticmethod
+    def cards_to_markdown_file(cards):
+        md_text = ""
+        for card in cards:
+            q = ""
+            a = ""
             for x in range(len(card[0])):
                 q += card[0][x]
                 q += "\n"
-        
-        return q
+            for x in range(len(card[1])):
+                a += card[1][x]
+                a += "\n"
+            md_text += q
+            md_text += "<!--seperator-->\n"
+            md_text += a
+            md_text += "---\n"
+        return md_text
     
     @staticmethod
     def card_to_markdown(card):
@@ -113,8 +122,6 @@ class MdParser():
 
             if(edited_line[0:3] == "[ ]" or edited_line[0:3] == "[*]"):
                 return "MultipleChoice_Multiple"
-            elif(edited_line[0:11] == "Open Photo:"): 
-                return "Photo_Answer" # To be edited, I still didn't decide how to add photo feature
             else: 
                 return "Normal"
         
