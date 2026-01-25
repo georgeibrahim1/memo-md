@@ -332,8 +332,7 @@ class Question_Display_MultipleChoices(Screen):
         self.answered = True
         self.refresh_bindings()
         self.get_widget_by_id("Question_Display_MultipleChoices_answerContainer").remove_class("hidden")
-    
-    def action_continue(self):
+
         selected = self.query_one(SelectionList).selected
 
         if(len(selected) != len(self.true_selections_as_indecies)):
@@ -346,8 +345,9 @@ class Question_Display_MultipleChoices(Screen):
                 self.app.falsePerSession.append(self.card)
                 self.app.pop_screen()
                 return
-        
         self.app.truePerSession.append(self.card)
+    
+    def action_continue(self):
         self.app.pop_screen()
 
 
