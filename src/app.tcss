@@ -6,12 +6,61 @@
 */
 
 
+$dark_brown: #4D2D18;
+$med_brown: #8A6240;
+$light_brown: #CABA9C;
+$hunter_green: #4C6444;
+$dark_green: #102820;
+
 .hidden {
     display: none;
 }
 
 #Question_Display_answerContainer {
     align: center middle;
+}
+
+#questionMarkDown {
+    border: round $med_brown;
+    background: $dark_brown;
+    border-title-align: left;
+    border-title-style: bold;
+    border-title-color: $med_brown;
+    padding-top: 1;
+}
+
+#answerMarkDown {
+    border: round $hunter_green;
+    border-title-align: left;
+    border-title-style: bold;
+    border-title-color: $hunter_green;
+    padding-top: 1;
+}
+
+#multipleChoiceQuestionMarkDown {
+    border: round $med_brown;
+    background: $dark_brown;
+    border-title-align: left;
+    border-title-style: bold;
+    border-title-color: $med_brown;
+    padding-top: 1;
+}
+
+#sel {
+    border: round $light_brown;
+    border-title-align: left;
+    border-title-style: bold;
+    border-title-color: $light_brown;
+    padding: 1;
+}
+
+#Question_Display_MultipleChoices_answerContainer {
+    border: round $hunter_green;
+    border-title-align: left;
+    border-title-style: bold;
+    border-title-color: $hunter_green;
+    padding: 1;
+    margin-top: 1;
 }
 
 IsTrueOrFalseModalScreen {
@@ -33,6 +82,12 @@ ErrorModalScreen {
     padding: 0 1;
     width: 60;
     height: 11;
+    border: round $hunter_green;
+    background: $dark_green;
+}
+
+.Modal Button {
+    width: 100%;
 }
 
 .QuestionLabel {

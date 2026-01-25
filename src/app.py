@@ -5,22 +5,31 @@ from zandev_textual_widgets import FileSelector
 from textual.app import App, ComposeResult
 from textual.screen import Screen , ModalScreen
 from textual.containers import Container, Horizontal, Grid
-from textual.widgets import Header, Footer, Label, DirectoryTree, Button, MarkdownViewer, SelectionList
+from textual.widgets import Header, Footer, Label, DirectoryTree, Button, MarkdownViewer, SelectionList, Pretty, Static
 from textual.widgets.selection_list import Selection
 
 from helpers.parser import MdParser
+
+from rich_pixels import Pixels
+from rich.console import Console
+
+from helpers.theme import forest_theme
 
 
 class MemoApp(App):
 
     BINDINGS = []
-    
+    CSS_PATH ="./app.tcss"
+
     def __init__(self):
         super().__init__()
         self.path = ""
         self.falsePerSession = []
+        self.truePerSession = []
 
     def on_mount(self): 
+        self.register_theme(forest_theme)
+        self.theme = "forest"
         self.push_screen(HelloScreen())
 
     def compose(self) -> ComposeResult:
@@ -45,6 +54,9 @@ class HelloScreen(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
         yield Label("Hello Screen")
+        # console = Console()
+        # pixels = Pixels.from_image_path(os.path.normpath("assets/architecture.png"))
+        # yield Static(pixels)
         yield Footer()
 
     async def action_path(self):
@@ -168,12 +180,19 @@ class Question_Display_NormalorPhoto(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
         md_text = MdParser.card_to_markdown(self.card)
+        
+        md_question = MarkdownViewer(md_text[0], show_table_of_contents=False, id="questionMarkDown")
+        md_question.border_title = "Question"
+        
+        md_answer = MarkdownViewer(md_text[1], show_table_of_contents=False, classes="hidden", id="answerMarkDown")
+        md_answer.border_title = "Answer"
+        
         yield Horizontal(
-            MarkdownViewer(md_text[0], show_table_of_contents=False), 
+            md_question, 
             Container(
-                MarkdownViewer(md_text[1] , show_table_of_contents=False , classes="hidden" , id="answerMarkDown"),
+                md_answer,
                 Button(
-                    "Show Answer" , variant="success" , id="answerButton"
+                    "Show Answer", variant="success", id="answerButton"
                 ),
                 id="Question_Display_answerContainer"
             )
@@ -284,18 +303,27 @@ class Question_Display_MultipleChoices(Screen):
             s_widget = Selection(txt_bool_choices[i][0] , i , id=id_s)
             selections.append(s_widget)
 
+        md_question = MarkdownViewer(md_text[0], show_table_of_contents=False, id="multipleChoiceQuestionMarkDown")
+        md_question.border_title = "Question"
+        
+        answer_container = Container(
+            *true_selections_as_labels,
+            id="Question_Display_MultipleChoices_answerContainer",
+            classes="hidden"
+        )
+        answer_container.border_title = "Correct Answer(s)"
+        
+        selection_list = SelectionList[bool](
+            *selections,
+            id="sel"
+        )
+        selection_list.border_title = "Choices"
+        
         yield Horizontal(
-            MarkdownViewer(md_text[0], show_table_of_contents=False), 
+            md_question, 
             Container(
-                SelectionList[bool](
-                    *selections,
-                    id="sel"
-                ),
-                Container(
-                    *true_selections_as_labels,
-                    id="Question_Display_MultipleChoices_answerContainer",
-                    classes="hidden"
-                )
+                selection_list,
+                answer_container
             )
         )
         yield Footer()   
