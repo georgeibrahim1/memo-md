@@ -14,7 +14,7 @@
 
 - Keep your flashcards on your computer. No cloud services, no subscriptions, just your files, always available and private.
 
-- Turn any notes into flashcards instantly. Give your AI assistant the [format](format.md) markdown code, paste your notes, and get as many cards as you need (*you may also add the format rules that are mentioned [below](#important-format-rules) if your AI assistant is stupid).
+- Turn any notes into flashcards instantly. Give your AI assistant the [format](format.md) markdown code, paste your notes, and get as many cards as you need (*you may also add the format rules that are mentioned [below](#-important-format-rules) if your AI assistant is stupid).
 
 ---
 
