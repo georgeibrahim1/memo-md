@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 from zandev_textual_widgets import FileSelector
 
@@ -10,7 +11,7 @@ from textual.widgets.selection_list import Selection
 
 from helpers.parser import MdParser
 
-from rich_pixels import Pixels
+from rich_pixels import Pixels , Renderer
 from rich.console import Console
 
 from helpers.theme import forest_theme
@@ -19,7 +20,7 @@ from helpers.customized_header import Header
 class MemoApp(App):
 
     BINDINGS = []
-    CSS_PATH = "app.tcss"
+    CSS_PATH = "src/app.tcss" # change to app.tcss to compress the repo to .exe by pyinstaller
 
     def __init__(self):
         super().__init__()
@@ -53,9 +54,17 @@ class HelloScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        # console = Console()
-        # pixels = Pixels.from_image_path(os.path.normpath("assets/forest.jpg") , [150,100])
-        # yield Static(pixels)
+        console = Console()
+        if getattr(sys, 'frozen', False): # this is for pyinstaller, to read paths correctly, as the project structure is changed while bundling by pyinstaller
+            image_path = os.path.join(sys._MEIPASS, "assets", "memomd.png")
+        else:
+            image_path = "assets/memomd.png"
+        pixels = Pixels.from_image_path((image_path) , [73,11])
+        yield Container(
+            Container(
+                Static(pixels , classes="pixel"),
+                classes="submain"
+        ) , classes="main")
         yield Footer(show_command_palette=False)
 
     async def action_path(self):
@@ -145,7 +154,7 @@ class SessionClass(Screen):
 
         n = len(self.cards)
 
-        for x in range(n-1,-1,-1): # add from behind as it's like a stack
+        for x in range(n-1,-1,-1): # like a stack
             qt = self.app.get_question_screen_type(self.cards[x])
             if(qt == "MultipleChoices"):
                 self.app.push_screen(Question_Display_MultipleChoices(self.cards[x]))
