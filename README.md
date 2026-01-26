@@ -1,13 +1,14 @@
 <div align="center">
-    <img src="assets/memomd_v2.png" height="60"/>
+    <img src="assets/memomd_v2.png" height="100"/>
 </div>
+
+<div align="center">
 
 ![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Textual](https://img.shields.io/badge/Textual-TUI-20C997?style=for-the-badge)
 ![Rich Pixels](https://img.shields.io/badge/Rich_Pixels-Photo-FF6188?style=for-the-badge)
 
-
----
+</div>
 
 ## <img src="assets/star.svg" width="20" height="20"/> Why This Application?
 
@@ -28,7 +29,7 @@
 ### 1. Normal Question/Answer
 
 **Format:**
-```markdown
+````markdown
 # What is the time complexity of the following algorithm?
 ```python
 def find_duplicates(arr):
@@ -47,7 +48,9 @@ def find_duplicates(arr):
 **Time Complexity: O(n)**
 
 The algorithm iterates through the array once (n iterations). Set lookup and insertion operations are O(1) on average. Therefore, the overall time complexity is O(n) where n is the length of the array.
-```
+
+---
+````
 
 **Preview:**
 
