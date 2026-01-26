@@ -4,9 +4,9 @@
 
 <div align="center">
 
-![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Textual](https://img.shields.io/badge/Textual-TUI-20C997?style=for-the-badge)
-![Rich Pixels](https://img.shields.io/badge/Rich_Pixels-Photo-FF6188?style=for-the-badge)
+[![Textual](https://img.shields.io/badge/Textual-TUI-20C997?style=for-the-badge)](https://github.com/Textualize/textual)
+[![Rich Pixels](https://img.shields.io/badge/Rich_Pixels-Photo-FF6188?style=for-the-badge)](https://github.com/darrenburns/rich-pixels)
+[![Zandev Widgets](https://img.shields.io/badge/Zandev-Widgets-9B59B6?style=for-the-badge)](https://github.com/ZandevOxford/zandev_textual_widgets)
 
 </div>
 
@@ -14,7 +14,7 @@
 
 - Keep your flashcards on your computer. No cloud services, no subscriptions, just your files, always available and private.
 
-- Turn any notes into flashcards instantly. Give your AI assistant the format, paste your notes, and get as many cards as you need.
+- Turn any notes into flashcards instantly. Give your AI assistant the [format](format.md) markdown code, paste your notes, and get as many cards as you need (*you may also add the format rules that are mentioned [below](#important-format-rules) if your AI assistant is stupid).
 
 ---
 
