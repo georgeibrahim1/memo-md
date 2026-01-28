@@ -20,7 +20,7 @@ from helpers.customized_header import Header
 class MemoApp(App):
 
     BINDINGS = []
-    CSS_PATH = "src/app.tcss" # change to app.tcss to compress the repo to .exe by pyinstaller
+    CSS_PATH = "app.tcss" # change to app.tcss to compress the repo to .exe by pyinstaller
 
     def __init__(self):
         super().__init__()
@@ -113,10 +113,7 @@ class SessionClass(Screen):
     def __init__(self,md:str):
         super().__init__()
         self.md = md
-        try:
-            self.cards = MdParser(self.md).cards
-        except:
-            self.app.push_screen(ErrorModalScreen())
+        self.cards = MdParser(self.md).cards
         
 
         

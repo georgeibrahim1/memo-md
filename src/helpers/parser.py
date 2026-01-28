@@ -10,7 +10,7 @@ class MdParser():
 
     @staticmethod 
     def _load(path): # TODO: it must raiseErrors if the format is not like the requried
-        with open(path) as f:
+        with open(path, encoding='utf-8') as f:
             data = f.readlines()
             return data
          
